@@ -1,0 +1,1 @@
+C:\Users\DELL\IdeaProjects\TextExtractor\build\classes\kotlin\main\Extractor.class;C:\Users\DELL\IdeaProjects\TextExtractor\build\classes\kotlin\main\MainKt.class;C:\Users\DELL\IdeaProjects\TextExtractor\build\classes\kotlin\main\Question.class

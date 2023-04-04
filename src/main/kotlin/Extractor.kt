@@ -1,3 +1,4 @@
+
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import java.io.File
@@ -6,8 +7,10 @@ import java.io.File
 class Extractor (private val filePath: String) {
 
     fun extractTextFromPDF(): String {
+
         val document = PDDocument.load(File(filePath))
         val stripper = PDFTextStripper()
+
         val text = stripper.getText(document)
         document.close()
         return text
@@ -15,7 +18,7 @@ class Extractor (private val filePath: String) {
     }
 
     fun stripText (pdfText: String): List<String> {
-        val pattern = "(\\r\\n\\d+\\.\\s)".toRegex()
+        val pattern = "(\\r\\n\\d+\\.\\s+)|(\\r\\n\\d+\\.)".toRegex() //|(\r\n\d+\s)
         val text = pdfText.split(pattern)
         val mutableText = text.toMutableList()
         mutableText.removeAt(0)
@@ -25,14 +28,14 @@ class Extractor (private val filePath: String) {
     fun getAnswers (pdfText: String): List<String> {
         val finalList: MutableList<String> = mutableListOf()
         val arr = pdfText.split("ANSWERS")
-        val text = arr[1].replace("Test - \\d+".toRegex(), "")
+        val text = arr[1].replace("Test-\\d+|TEST\\s\\d+-|TEST\\s-\\s\\d+".toRegex(), "")
         val clean1 = text.split("\\s+".toRegex(), 0)
         val mutableText = clean1.toMutableList()
         mutableText.removeAt(0)
 
 
         for (answers in mutableText){
-            val temp = answers.replace("\\d+-".toRegex(), "")
+            val temp = answers.replace("\\d+-|\\d+\\s-".toRegex(), "")
             finalList.add(temp)
         }
         return finalList
@@ -55,7 +58,7 @@ class Extractor (private val filePath: String) {
             .replace("ANSWERS", "")
     }
 
-    fun convertQuestionsToDataClass(text: List<String>, questionClass:String, questionLevel:String) : List<Question> {
+    fun convertQuestionsToDataClass(text: List<String>, questionClass:String, questionLevel:String, questionTopic:String) : List<Question> {
         val pattern = "[ABCDE]\\)".toRegex()
         val questions: MutableList<Question> = mutableListOf()
         var tempQuestion:Question
@@ -69,8 +72,8 @@ class Extractor (private val filePath: String) {
                     question = question,
                     options = mapOf("A" to optionA, "B" to optionB, "C" to optionC, "D" to optionD, "E" to optionE),
                     questionClass = questionClass,
-                    questionLevel =
-                    questionLevel
+                    questionLevel = questionLevel,
+                    questionTopic = questionTopic
                 )
             }else{
                 val (question, optionA, optionB, optionC, optionD) = listOf(temp[0], temp[1], temp[2], temp[3], temp[4])
@@ -78,8 +81,8 @@ class Extractor (private val filePath: String) {
                     question = question,
                     options = mapOf("A" to optionA, "B" to optionB, "C" to optionC, "D" to optionD),
                     questionClass = questionClass,
-                    questionLevel =
-                    questionLevel
+                    questionLevel = questionLevel,
+                    questionTopic = questionTopic
                 )
             }
 

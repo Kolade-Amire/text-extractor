@@ -16,6 +16,10 @@ dependencies {
     implementation("org.apache.pdfbox:pdfbox:2.0.27")
     implementation ("com.google.code.gson:gson:2.10")
     implementation(kotlin("stdlib-jdk8"))
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.12.3")
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
+
+
 
 }
 

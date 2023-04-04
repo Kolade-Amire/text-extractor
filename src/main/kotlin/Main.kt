@@ -4,7 +4,7 @@ import java.io.FileWriter
 fun main(){
 
 
-        val filepath = "C:\\Users\\DELL\\Desktop\\use_of_english.pdf"
+        val filepath = "C:\\Users\\DELL\\Desktop\\QEnglish_Project\\questions\\vocabulary\\intermediate//synonyms_intermediate.pdf"
         val extractor = Extractor(filepath)
         val text = extractor.extractTextFromPDF()
 
@@ -12,9 +12,9 @@ fun main(){
         val cleanedText = extractor.cleanText(text)
         val strippedText = extractor.stripText(cleanedText)
 
-        val questionProperties = mutableListOf("Grammar", "Intermediate")
+        val questionProperties = mutableListOf("vocabulary", "elementary", "synonyms")
 
-        val questions = extractor.convertQuestionsToDataClass(strippedText, questionProperties[0], questionProperties[1])
+        val questions = extractor.convertQuestionsToDataClass(strippedText, questionProperties[0], questionProperties[1], questionProperties[2])
         val answers = extractor.getAnswers(text)
         val finalData = extractor.mergeAnswersWithQuestions(questions,answers)
 
